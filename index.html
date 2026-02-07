@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ff4e78, #ff8fab);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  background: rgba(255,255,255,0.2);
+  padding: 30px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  z-index: 10;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#yesBtn {
+  background: #ff2e63;
+  color: white;
+}
+
+#noBtn {
+  background: #444;
+  color: white;
+  position: absolute;
+  right: -90px;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Success 💕<br>Will you be my Valentine?</h1>
+  <div class="buttons">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😭</button>
+  </div>
+</div>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+let yesScale = 1;
+
+// Sound effects
+function playSound(freq, duration) {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  osc.frequency.value = freq;
+  osc.connect(ctx.destination);
+  osc.start();
+  setTimeout(() => osc.stop(), duration);
+}
+
+// No button logic
+noBtn.addEventListener("click", () => {
+  playSound(200, 150);
+
+  yesScale += 0.25;
+  yesBtn.style.transform = scale(${yesScale});
+
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 100);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
+
+// Yes button logic
+yesBtn.addEventListener("click", () => {
+  playSound(800, 300);
+
+  document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      width:100vw;
+      background: linear-gradient(135deg, #ff2e63, #ff9a9e);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      color:white;
+      font-family:'Segoe UI', sans-serif;
+      padding:20px;
+    ">
+      <h1 style="font-size:3rem;">
+        I KNEW YOU WOULD SAY YES 💕😍<br><br>
+        Happy Valentine’s Day 💘
+      </h1>
+    </div>
+  `;
+});
+
+// Floating hearts generator
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 7000);
+}
+
+setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
